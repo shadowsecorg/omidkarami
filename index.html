@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omid Karami - Cybersecurity Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #00ffcc; /* Mr. Robot-esque cyan/green */
+            --secondary-color: #ff003c; /* Accent red for glitch, terminal IP */
+            --bg-dark: #0a0a0a;
+            --bg-medium: #1a1a1a;
+            --text-light: #e0e0e0;
+            --text-dark: #a0a0a0; /* Muted text on dark backgrounds */
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Roboto Mono', monospace;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light); /* Default text color for the body */
+            font-family: var(--font-body);
+            overflow-x: hidden; 
+        }
+
+        .font-mono {
+            font-family: var(--font-mono);
+        }
+
+        .text-primary { color: var(--primary-color); }
+        .text-secondary { color: var(--secondary-color); } 
+        .bg-primary-translucent { background-color: rgba(0, 255, 204, 0.1); } 
+        .border-primary { border-color: var(--primary-color); }
+        .border-secondary { border-color: var(--secondary-color); }
+
+
+        /* Glitch Effect Base */
+        .glitch {
+            position: relative;
+            animation: glitch-skew 1s infinite linear alternate-reverse;
+        }
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark); 
+        }
+        .glitch::before {
+            left: 2px;
+            text-shadow: -1px 0 var(--secondary-color); 
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px;
+            text-shadow: -1px 0 var(--primary-color), 1px 1px var(--secondary-color); 
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim-2 5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-skew {
+            0% { transform: skewX(0deg); }
+            10% { transform: skewX(2deg); }
+            20% { transform: skewX(-2deg); }
+            30% { transform: skewX(0deg); }
+            100% { transform: skewX(0deg); }
+        }
+        @keyframes glitch-anim {
+            0% { clip: rect(32px, 9999px, 76px, 0); transform: skew(0.3deg); }
+            5% { clip: rect(12px, 9999px, 60px, 0); transform: skew(0deg); }
+            10% { clip: rect(40px, 9999px, 67px, 0); transform: skew(0.5deg); }
+            100% { clip: rect(20px, 9999px, 80px, 0); transform: skew(0deg); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(80px, 9999px, 120px, 0); transform: skew(0.2deg); }
+            100% { clip: rect(70px, 9999px, 110px, 0); transform: skew(0deg); }
+        }
+
+        /* Terminal styles */
+        .terminal {
+            background-color: rgba(0,0,0,0.85); 
+            border: 1px solid var(--primary-color); 
+            border-radius: 8px;
+            padding: 20px;
+            height: 400px; 
+            overflow-y: auto;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3); 
+        }
+        .terminal-output span { display: block; white-space: pre-wrap; color: var(--text-light); }
+        .terminal-input {
+            display: flex;
+            align-items: center;
+        }
+        .terminal-input .prompt {
+            color: var(--primary-color); 
+            margin-right: 8px;
+        }
+        .terminal-input input {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-family: var(--font-mono);
+            flex-grow: 1;
+            outline: none;
+        }
+        .terminal-input input:focus {
+            box-shadow: none;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-medium); border-radius: 4px;}
+        ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px;}
+        ::-webkit-scrollbar-thumb:hover { background: #00cca3; } 
+
+        /* Sidebar */
+        #sidebar {
+            background-color: var(--bg-medium); 
+            transition: transform 0.3s ease-in-out;
+            z-index: 50;
+        }
+        #sidebar h1.glitch { 
+             color: var(--primary-color); 
+        }
+        #sidebar p.text-sm { 
+            color: var(--text-dark); 
+        }
+        #nickname {
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            margin-top: -0.25rem; /* Adjust spacing if needed */
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Section title styling */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+            color: var(--text-light); 
+        }
+        .section-title.glitch { 
+             color: var(--text-light);
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color); 
+            animation: flicker 1.5s infinite;
+        }
+
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Skill item styling */
+        .skill-item {
+            background-color: var(--bg-medium); 
+            border: 1px solid rgba(0, 255, 204, 0.2); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .skill-item:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.5); 
+        }
+        .skill-item h3 { 
+             color: var(--primary-color); 
+        }
+        .skill-item ul {
+            color: var(--text-dark); 
+        }
+
+
+        /* Experience timeline */
+        .timeline-item {
+            position: relative;
+            padding-left: 30px; 
+            margin-bottom: 30px;
+        }
+        .timeline-item::before { 
+            content: '';
+            position: absolute;
+            left: 9px; 
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--primary-color); 
+            opacity: 0.3;
+        }
+        .timeline-item::after { 
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px; 
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color); 
+            border: 3px solid var(--bg-dark); 
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5); 
+        }
+        .timeline-item:last-child::before {
+            height: 15px; 
+        }
+        .timeline-item h3 { 
+             color: var(--primary-color); 
+        }
+        .timeline-item p.text-sm {
+            color: var(--text-dark); 
+        }
+        .timeline-item p.mt-1 { 
+            color: var(--text-light); 
+        }
+
+
+        /* Tabs for Articles */
+        .tab-button {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            color: var(--text-dark); 
+        }
+        .tab-button.active {
+            color: var(--primary-color); 
+            border-bottom-color: var(--primary-color);
+            background-color: rgba(0, 255, 204, 0.05); 
+        }
+        .tab-content p { 
+            color: var(--text-light); 
+        }
+
+        /* Mobile menu button */
+        #menu-button { 
+            z-index: 60; 
+            background-color: var(--primary-color); 
+            color: var(--bg-dark); 
+        }
+
+        /* Language switcher */
+        #language-switcher button {
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-color: var(--primary-color); 
+            color: var(--primary-color); 
+        }
+        #language-switcher button.active-lang {
+            background-color: var(--primary-color);
+            color: var(--bg-dark); 
+        }
+        .persian-text { direction: rtl; text-align: right; font-family: 'Tahoma', 'Arial', sans-serif; }
+        /* Russian text will use default LTR and font */
+
+        /* PGP Key Section Styling */
+        #pgp-key-container {
+            background-color: var(--bg-medium); 
+            border: 1px solid var(--primary-color); 
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 1.5rem;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3); 
+            overflow-x: auto; 
+        }
+        #pgp-key-container pre {
+            color: var(--text-light); 
+            font-family: var(--font-mono);
+            font-size: 0.8rem; 
+            white-space: pre-wrap; 
+            word-break: break-all; 
+        }
+        #pgp-key .section-title {
+            color: var(--primary-color);
+        }
+        #pgp-key .section-title::after {
+            background-color: var(--primary-color);
+        }
+
+
+        /* Services Section Cards */
+        #services .p-6.rounded-lg { 
+             border-color: var(--primary-color); 
+             background-color: var(--bg-medium); 
+        }
+        #services .p-6.rounded-lg h3 { 
+            color: var(--primary-color); 
+        }
+         #services .p-6.rounded-lg p {
+            color: var(--text-dark); 
+        }
+
+        /* Sound Section */
+        #sound p { 
+            color: var(--text-dark); 
+        }
+         #sound iframe {
+            border-color: var(--primary-color); 
+        }
+         #sound .text-primary.hover\\:underline { 
+            color: var(--primary-color) !important; 
+         }
+         #sound div > a { 
+            color: var(--text-dark) !important;
+         }
+         #sound div > a:hover {
+            color: var(--primary-color) !important;
+         }
+
+
+        /* Fun Section */
+        #fun h3 { 
+             color: var(--primary-color); 
+        }
+        #fun ul, #fun p {
+            color: var(--text-dark); 
+        }
+        
+        /* Contact Section */
+        #contact a.glitch { 
+            background-color: var(--primary-color); 
+            color: var(--bg-dark); 
+        }
+        #contact p.text-lg { 
+            color: var(--text-light); 
+        }
+
+        /* Footer */
+        footer p.text-sm {
+            color: var(--text-dark); 
+        }
+        footer .border-gray-800 { 
+            border-color: var(--bg-medium);
+        }
+        #language-switcher .border-gray-700 { 
+             border-color: var(--bg-dark);
+        }
+        #articles .border-gray-700 { 
+            border-color: var(--bg-medium);
+        }
+
+        /* Telegram Link Animation */
+        .telegram-link-animated {
+            display: inline-block; /* Ensure it behaves like a block for transforms */
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .telegram-link-animated:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 204, 0.4);
+        }
+
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Sidebar / Mobile Menu -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 md:w-72 transform -translate-x-full md:translate-x-0 p-6 space-y-6 overflow-y-auto">
+        <div class="text-center">
+            <img src="https://placehold.co/150x150/0a0a0a/00ffcc?text=Elliot" alt="Elliot Alderson - Logo" id="elliot-logo" class="w-32 h-32 md:w-40 md:h-40 rounded-full mx-auto mb-4 border-2 border-primary shadow-lg">
+            <h1 class="text-2xl font-bold text-primary glitch" data-text="Omid Karami">Omid Karami</h1>
+            <p id="nickname" class="text-sm" data-en="aka wrongbyte" data-fa="مشهور به wrongbyte" data-ru="также известный как wrongbyte">[RU: aka wrongbyte]</p>
+            <p class="text-sm" data-en="Cybersecurity Specialist" data-fa="متخصص امنیت سایبری" data-ru="Специалист по кибербезопасности">[RU: Cybersecurity Specialist]</p>
+        </div>
+
+        <nav class="space-y-2">
+            <a href="#home" class="block py-2 px-3 rounded hover:bg-primary-translucent hover:text-primary transition-colors nav-link" data-en="Home" data-fa="خانه" data-ru="Главная">[RU: Home]</a>
+            <a href="#skills" class="block py-2 px-3 rounded hover:bg-primary-translucent hover:text-primary transition-colors nav-link" data-en="Skills" data-fa="مهارت‌ها" data-ru="Навыки">[RU: Skills]</a>
+            <a href="#experience" class="block py-2 px-3 rounded hover:bg-primary-translucent hover:text-primary transition-colors nav-link" data-en="Experience" data-fa="تجربه" data-ru="Опыт">[RU: Experience]</a>
+            <a href="#articles" class="block py-2 px-3 rounded hover:bg-primary-translucent hover:text-primary transition-colors nav-link" data-en="Articles" data-fa="مقالات" data-ru="Статьи">[RU: Articles]</a>
+            <a href="#services" class="block py-2 px-3 rounded hover:bg-primary-translucent hover:text-primary transition-colors nav-link" data-en="Services" data-fa="خدمات" data-ru="Услуги">[RU: Services]</a>
+            <a href="#pgp-key" class="block py-2 px-3 rounded hover:bg-primary-translucent hover:text-primary transition-colors nav-link" data-en="PGP Key" data-fa="کلید PGP" data-ru="PGP Ключ">[RU: PGP Key]</a>
+            <a href="#sound" class="block py-2 px-3 rounded hover:bg-primary-translucent hover:text-primary transition-colors nav-link" data-en="Sound" data-fa="موسیقی" data-ru="Музыка">[RU: Sound]</a>
+            <a href="#fun" class="block py-2 px-3 rounded hover:bg-primary-translucent hover:text-primary transition-colors nav-link" data-en="Fun" data-fa="سرگرمی" data-ru="Развлечения">[RU: Fun]</a>
+            <a href="#contact" class="block py-2 px-3 rounded hover:bg-primary-translucent hover:text-primary transition-colors nav-link" data-en="Contact" data-fa="تماس" data-ru="Контакт">[RU: Contact]</a>
+        </nav>
+
+        <div id="language-switcher" class="pt-4 border-t flex justify-center space-x-2"> 
+            <button id="lang-en" class="px-3 py-1 rounded border text-primary active-lang">EN</button> 
+            <button id="lang-fa" class="px-3 py-1 rounded border text-primary">FA</button> 
+            <button id="lang-ru" class="px-3 py-1 rounded border text-primary">RU</button>
+        </div>
+        
+        <div id="telegram-link-container" class="mt-6 text-center" data-aos="fade-up" data-aos-delay="200">
+            <a href="https://t.me/wrong_byte" target="_blank" class="telegram-link-animated inline-block p-3 rounded-lg border border-primary text-primary hover:bg-primary hover:text-bg-dark transition-all duration-300 ease-in-out">
+                <i class="fab fa-telegram-plane mr-2"></i>
+                <span data-en="wrong_byte (Telegram)" data-fa="wrong_byte (تلگرام)" data-ru="wrong_byte (Telegram)">[RU: wrong_byte (Telegram)]</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Mobile Menu Button -->
+    <button id="menu-button" class="fixed top-4 left-4 md:hidden p-2 rounded focus:outline-none"> 
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main Content -->
+    <main id="main-content" class="md:ml-72 p-6 md:p-10">
+        
+        <!-- Home Section with Terminal -->
+        <section id="home" class="min-h-screen flex flex-col justify-center items-center" data-aos="fade-in" data-aos-duration="1000">
+            <div class="w-full max-w-3xl">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-center glitch" data-text="> SYSTEM ONLINE_" data-en="> SYSTEM ONLINE_" data-fa="> سیستم آنلاین_" data-ru="> СИСТЕМА ОНЛАЙН_">[RU: > SYSTEM ONLINE_]</h2>
+                <div class="terminal font-mono text-sm" id="terminal">
+                    <div class="terminal-output" id="terminal-output">
+                        <!-- Initial content will be typed out by JS -->
+                    </div>
+                    <div class="terminal-input mt-2">
+                        <span class="prompt">[OMID_KARAMI_PORTFOLIO_V2.1 ~]$</span>
+                        <input type="text" id="terminal-input-field" autofocus>
+                    </div>
+                </div>
+                <p class="text-center mt-4 text-xs" data-en="for fun :)" data-fa="فقط برای تفریح :)" data-ru="для развлечения :)" style="color: var(--text-dark);">[RU: for fun :)]</p>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-16">
+            <h2 class="section-title glitch" data-text="Skills Matrix" data-en="Skills Matrix" data-fa="ماتریس مهارت‌ها" data-ru="Матрица навыков">[RU: Skills Matrix]</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                <div class="skill-item p-6 rounded-lg" data-aos="fade-up">
+                    <h3 class="text-xl font-semibold text-primary mb-3" data-en="Programming Languages" data-fa="زبان‌های برنامه‌نویسی" data-ru="Языки программирования">[RU: Programming Languages]</h3>
+                    <ul class="space-y-2"> 
+                        <li data-en="C++" data-fa="C++" data-ru="C++">C++</li>
+                        <li data-en="Python" data-fa="Python" data-ru="Python">Python</li>
+                        <li data-en="Java" data-fa="Java" data-ru="Java">Java</li>
+                        <li data-en="Dart" data-fa="Dart" data-ru="Dart">Dart</li>
+                        <li data-en="JavaScript" data-fa="JavaScript" data-ru="JavaScript">JavaScript</li>
+                    </ul>
+                </div>
+                <div class="skill-item p-6 rounded-lg" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-xl font-semibold text-primary mb-3" data-en="Frameworks" data-fa="فریم‌ورک‌ها" data-ru="Фреймворки">[RU: Frameworks]</h3>
+                    <ul class="space-y-2"> 
+                        <li data-en="Flutter" data-fa="Flutter" data-ru="Flutter">Flutter</li>
+                        <li data-en="Node.js" data-fa="Node.js" data-ru="Node.js">Node.js</li>
+                    </ul>
+                </div>
+                <div class="skill-item p-6 rounded-lg" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-xl font-semibold text-primary mb-3" data-en="Certifications" data-fa="مدارک" data-ru="Сертификаты">[RU: Certifications]</h3>
+                    <ul class="space-y-2"> 
+                        <li data-en="Network+" data-fa="Network+" data-ru="Network+">Network+</li>
+                        <li data-en="Security+" data-fa="Security+" data-ru="Security+">Security+</li>
+                        <li data-en="LPIC-1" data-fa="LPIC-1" data-ru="LPIC-1">LPIC-1</li>
+                        <li data-en="LPIC-2" data-fa="LPIC-2" data-ru="LPIC-2">LPIC-2</li>
+                        <li data-en="OSCP (Offensive Security Certified Professional)" data-fa="OSCP" data-ru="OSCP">OSCP</li>
+                    </ul>
+                </div>
+                <div class="skill-item p-6 rounded-lg" data-aos="fade-up" data-aos-delay="300">
+                    <h3 class="text-xl font-semibold text-primary mb-3" data-en="Fields of Expertise" data-fa="حوزه‌های تخصصی" data-ru="Области экспертизы">[RU: Fields of Expertise]</h3>
+                    <ul class="space-y-2"> 
+                        <li data-en="Web Penetration Testing" data-fa="تست نفوذ وب" data-ru="Тестирование на проникновение веб-приложений">[RU: Web Penetration Testing]</li>
+                        <li data-en="Mobile Penetration Testing" data-fa="تست نفوذ موبایل" data-ru="Тестирование на проникновение мобильных приложений">[RU: Mobile Penetration Testing]</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-16">
+            <h2 class="section-title glitch" data-text="Experience Timeline" data-en="Experience Timeline" data-fa="خط زمانی تجربه" data-ru="Хронология опыта">[RU: Experience Timeline]</h2>
+            <div class="mt-8 space-y-8">
+                <div class="timeline-item" data-aos="fade-left">
+                    <h3 class="text-xl font-semibold text-primary" data-en="Amn Gostaran Farzan" data-fa="امن گستران فرزان" data-ru="[RU: Amn Gostaran Farzan]">[RU: Amn Gostaran Farzan]</h3>
+                    <p class="text-sm" data-en="Role & Duration - [Details]" data-fa="نقش و مدت - [جزئیات]" data-ru="[RU: Role & Duration - [Details]]">[RU: Role & Duration - [Details]]</p> 
+                    <p class="mt-1" data-en="Key responsibilities and achievements..." data-fa="مسئولیت‌ها و دستاوردهای کلیدی..." data-ru="[RU: Key responsibilities...]">[RU: Key responsibilities...]</p>
+                </div>
+                <div class="timeline-item" data-aos="fade-left" data-aos-delay="100">
+                    <h3 class="text-xl font-semibold text-primary" data-en="Daya Vira Fartak" data-fa="دایا ویرا فرتاک" data-ru="[RU: Daya Vira Fartak]">[RU: Daya Vira Fartak]</h3>
+                    <p class="text-sm" data-en="Role & Duration - [Details]" data-fa="نقش و مدت - [جزئیات]" data-ru="[RU: Role & Duration - [Details]]">[RU: Role & Duration - [Details]]</p> 
+                     <p class="mt-1" data-en="Key responsibilities and achievements..." data-fa="مسئولیت‌ها و دستاوردهای کلیدی..." data-ru="[RU: Key responsibilities...]">[RU: Key responsibilities...]</p>
+                </div>
+                <div class="timeline-item" data-aos="fade-left" data-aos-delay="200">
+                    <h3 class="text-xl font-semibold text-primary" data-en="Robotics Association, Islamic Azad University of Yazd" data-fa="انجمن رباتیک، دانشگاه آزاد اسلامی یزد" data-ru="[RU: Robotics Association, IAU Yazd]">[RU: Robotics Association, IAU Yazd]</h3>
+                    <p class="text-sm" data-en="Role & Duration - [Details]" data-fa="نقش و مدت - [جزئیات]" data-ru="[RU: Role & Duration - [Details]]">[RU: Role & Duration - [Details]]</p> 
+                     <p class="mt-1" data-en="Key responsibilities and achievements..." data-fa="مسئولیت‌ها و دستاوردهای کلیدی..." data-ru="[RU: Key responsibilities...]">[RU: Key responsibilities...]</p>
+                </div>
+                 <div class="timeline-item" data-aos="fade-left" data-aos-delay="300">
+                    <h3 class="text-xl font-semibold text-primary" data-en="Computer Association, Islamic Azad University of Yazd" data-fa="انجمن کامپیوتر، دانشگاه آزاد اسلامی یزد" data-ru="[RU: Computer Association, IAU Yazd]">[RU: Computer Association, IAU Yazd]</h3>
+                    <p class="text-sm" data-en="Role & Duration - [Details]" data-fa="نقش و مدت - [جزئیات]" data-ru="[RU: Role & Duration - [Details]]">[RU: Role & Duration - [Details]]</p> 
+                     <p class="mt-1" data-en="Key responsibilities and achievements..." data-fa="مسئولیت‌ها و دستاوردهای کلیدی..." data-ru="[RU: Key responsibilities...]">[RU: Key responsibilities...]</p>
+                </div>
+                 <div class="timeline-item" data-aos="fade-left" data-aos-delay="400">
+                    <h3 class="text-xl font-semibold text-primary" data-en="Siam Gostar Mandegar Yazd" data-fa="صیام گستر ماندگار یزد" data-ru="[RU: Siam Gostar Mandegar Yazd]">[RU: Siam Gostar Mandegar Yazd]</h3>
+                    <p class="text-sm" data-en="Role & Duration - [Details]" data-fa="نقش و مدت - [جزئیات]" data-ru="[RU: Role & Duration - [Details]]">[RU: Role & Duration - [Details]]</p> 
+                     <p class="mt-1" data-en="Key responsibilities and achievements..." data-fa="مسئولیت‌ها و دستاوردهای کلیدی..." data-ru="[RU: Key responsibilities...]">[RU: Key responsibilities...]</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Articles Section -->
+        <section id="articles" class="py-16">
+            <h2 class="section-title glitch" data-text="Knowledge Base" data-en="Knowledge Base" data-fa="پایگاه دانش" data-ru="База знаний">[RU: Knowledge Base]</h2>
+            <div class="mt-8">
+                <div class="flex space-x-1 sm:space-x-4 border-b mb-6"> 
+                    <button class="tab-button py-2 px-4 active" data-tab="security-articles" data-en="Security Articles" data-fa="مقالات امنیتی" data-ru="Статьи по безопасности">[RU: Security Articles]</button>
+                    <button class="tab-button py-2 px-4" data-tab="writeups" data-en="Writeups" data-fa="گزارش‌ها (Writeups)" data-ru="Разборы (Writeups)">[RU: Writeups]</button>
+                    <button class="tab-button py-2 px-4" data-tab="hack-tricks" data-en="Hack Tricks" data-fa="ترفندهای هک" data-ru="Хакерские трюки">[RU: Hack Tricks]</button>
+                </div>
+                <div id="security-articles" class="tab-content active" data-aos="fade-up">
+                    <p data-en="Content for Security Articles will go here. Stay tuned for updates..." data-fa="محتوای مقالات امنیتی در اینجا قرار خواهد گرفت. منتظر به‌روزرسانی‌ها باشید..." data-ru="[RU: Content for Security Articles...]">[RU: Content for Security Articles...]</p>
+                </div>
+                <div id="writeups" class="tab-content" data-aos="fade-up">
+                     <p data-en="Content for Writeups will go here. Detailed analysis of CTFs and challenges." data-fa="محتوای گزارش‌ها (Writeups) در اینجا قرار خواهد گرفت. تحلیل دقیق چالش‌ها." data-ru="[RU: Content for Writeups...]">[RU: Content for Writeups...]</p>
+                </div>
+                <div id="hack-tricks" class="tab-content" data-aos="fade-up">
+                    <p data-en="Quick tips and tricks for hackers and security enthusiasts." data-fa="نکات و ترفندهای سریع برای هکرها و علاقه‌مندان به امنیت." data-ru="[RU: Quick tips and tricks...]">[RU: Quick tips and tricks...]</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-16">
+            <h2 class="section-title glitch" data-text="Services Offered" data-en="Services Offered" data-fa="خدمات ارائه‌شده" data-ru="Предлагаемые услуги">[RU: Services Offered]</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                <div class="p-6 rounded-lg" data-aos="zoom-in"> 
+                    <h3 class="text-xl font-semibold text-primary mb-2" data-en="Web Application Penetration Testing" data-fa="تست نفوذ برنامه‌های وب" data-ru="Тестирование веб-приложений на проникновение">[RU: Web App Pen Testing]</h3>
+                    <p data-en="Comprehensive security assessments for your web applications to identify and mitigate vulnerabilities." data-fa="ارزیابی‌های امنیتی جامع برای برنامه‌های وب شما جهت شناسایی و کاهش آسیب‌پذیری‌ها." data-ru="[RU: Comprehensive security assessments...]">[RU: Comprehensive security assessments...]</p> 
+                </div>
+                <div class="p-6 rounded-lg" data-aos="zoom-in" data-aos-delay="100">
+                    <h3 class="text-xl font-semibold text-primary mb-2" data-en="Mobile Application Penetration Testing" data-fa="تست نفوذ برنامه‌های موبایل" data-ru="Тестирование мобильных приложений на проникновение">[RU: Mobile App Pen Testing]</h3>
+                    <p data-en="In-depth testing of iOS and Android applications to uncover security flaws." data-fa="تست عمیق برنامه‌های iOS و Android برای کشف نقص‌های امنیتی." data-ru="[RU: In-depth testing of iOS and Android...]">[RU: In-depth testing of iOS and Android...]</p>
+                </div>
+                <div class="p-6 rounded-lg" data-aos="zoom-in" data-aos-delay="200">
+                    <h3 class="text-xl font-semibold text-primary mb-2" data-en="Network Security Audits" data-fa="ممیزی امنیت شبکه" data-ru="Аудит сетевой безопасности">[RU: Network Security Audits]</h3>
+                    <p data-en="Evaluating your network infrastructure for weaknesses and providing hardening recommendations." data-fa="ارزیابی زیرساخت شبکه شما برای یافتن نقاط ضعف و ارائه توصیه‌هایی برای مقاوم‌سازی." data-ru="[RU: Evaluating your network infrastructure...]">[RU: Evaluating your network infrastructure...]</p>
+                </div>
+                 <div class="p-6 rounded-lg" data-aos="zoom-in" data-aos-delay="300">
+                    <h3 class="text-xl font-semibold text-primary mb-2" data-en="Security Consultation" data-fa="مشاوره امنیتی" data-ru="Консультации по безопасности">[RU: Security Consultation]</h3>
+                    <p data-en="Expert advice and guidance on cybersecurity best practices and incident response." data-fa="مشاوره و راهنمایی تخصصی در مورد بهترین شیوه‌های امنیت سایبری و پاسخ به حوادث." data-ru="[RU: Expert advice and guidance...]">[RU: Expert advice and guidance...]</p>
+                </div>
+                <div class="p-6 rounded-lg" data-aos="zoom-in" data-aos-delay="400">
+                    <h3 class="text-xl font-semibold text-primary mb-2" data-en="Frontend Design" data-fa="طراحی فرانت" data-ru="Фронтенд-разработка">[RU: Frontend Design]</h3>
+                    <p data-en="Crafting intuitive and responsive user interfaces with a focus on user experience and modern aesthetics." data-fa="طراحی رابط‌های کاربری بصری و واکنش‌گرا با تمرکز بر تجربه کاربری و زیبایی‌شناسی مدرن." data-ru="[RU: Crafting intuitive UIs...]">[RU: Crafting intuitive UIs...]</p>
+                </div>
+                <div class="p-6 rounded-lg" data-aos="zoom-in" data-aos-delay="500">
+                    <h3 class="text-xl font-semibold text-primary mb-2" data-en="Full-Stack Web System Design (Secure)" data-fa="طراحی سامانه کامل تحت وب (امن)" data-ru="Разработка веб-систем полного цикла (безопасная)">[RU: Full-Stack Design]</h3>
+                    <p data-en="Developing complete web systems from frontend to backend, incorporating robust security practices at every stage." data-fa="توسعه سامانه‌های کامل وب از فرانت‌اند تا بک‌اند، با لحاظ کردن شیوه‌های امنیتی قدرتمند در هر مرحله." data-ru="[RU: Developing complete web systems...]">[RU: Developing complete web systems...]</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PGP Key Section -->
+        <section id="pgp-key" class="py-16">
+            <h2 class="section-title glitch" data-text="PGP Public Key" data-en="PGP Public Key" data-fa="کلید عمومی PGP" data-ru="Открытый ключ PGP">[RU: PGP Public Key]</h2>
+            <div id="pgp-key-container" data-aos="fade-up">
+                <pre>
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+xm8EaD8NtxMFK4EEACIDAwRbxOjvRceE0TBlq7NVtI92Uy03vKIFiuh8arVkQoxH
+YFlAnoT1ZnjBzeaBjgvR4KS5tULo3Z/jD89gliitGy2UzMEaZ8gh0DWd5RevWim+
+NYQXO1cA87fu62dmvfctGbDNJW9taWRrYXJhbWkgIDxvbWlka2FyYW1pYmlvQGdt
+YWlsLmNvbT7CjwQTEwoAFwUCaD8NtwIbLwMLCQcDFQoIAh4BAheAAAoJEKkVXYTc
+Va8YSqEBgN8T0Zamga1PHW7hCtJSzbeUf4wK9xCOXIw7ZcDyaQLbdFIkOL6EFank
+yxjN5/bhzAF+NANxdipOuawt6j4DclRSpaAyjaxa4J29/AQn1UCIEdzI1Ayr6xHO
++DPD2odnM5AtzlIEaD8NtxMIKoZIzj0DAQcCAwS5FYZithdhYUuaFPZj3/ZpO7Jf
+JSYVTa9N6DaL+j5U0j/KsYCC3Fcwn4yJdAp7b8MAGJKHasOFiuwTXsGGZun7wsAn
+BBgTCgAPBQJoPw23BQkPCZwAAhsuAGoJEKkVXYTcVa8YXyAEGRMKAAYFAmg/DbcA
+CgkQApcj08veuDh3kAD+KiiP3x3elBJlJsLziW8HjODhtotEOtZqz0hnY48BqxYB
+AKkr90eqsWRdGlq2LXZCG/ulEpB8jC/5nvnAXuvUQPfscbgBfA/Ye3gE9qLqbVWe
+4C+At8SY/vij+ac5bABwajmRpLNndBgOpBvRdclS/u0+46ewOgGArMNsF2hbBU2H
+nz/DiWdDbpbK41wjPqEgaUbLydW6aax1TDkLPozNdTvx0s8omvEXzlIEaD8NtxMI
+KoZIzj0DAQcCAwQcLMOSs0wHYE+dy+8oCZdJ7HyvISxn3mmjA3Ua2FGQF7YblhZ/
+UriuTRZkc93687vvzMBBPckAYSMlrRivxyr+wsAnBBgTCgAPBQJoPw23BQkPCZwA
+AhsuAGoJEKkVXYTcVa8YXyAEGRMKAAYFAmg/DbcACgkQRDhAvvMdPYpDIQEAkqcm
+vnFn44YWS3mmx0HMcZUC8L2UouP+OfhKbiTHtScA/jRXOemZ2EgioEwJyW9ixYy7
+z729kXsZQ3It9Z57E9dDKGoBgKBTwGI4/Nd/FpBxPDCt4N0WHtH49B9HGXJRWqI6
+ZeqG/ivdpgGrDJVxRYD3nSJgHAGAzjOuRWyzxcYDnkVpHfSKpqUlWeGAlf3VdDzm
+PXcLPpSqwPG++6gLbYHGrc8Z3xCW
+=r7au
+-----END PGP PUBLIC KEY BLOCK-----</pre>
+            </div>
+        </section>
+
+        <!-- Sound Section -->
+        <section id="sound" class="py-16">
+            <h2 class="section-title glitch" data-text="Sound Waves" data-en="Sound Waves" data-fa="امواج صوتی" data-ru="Звуковые волны">[RU: Sound Waves]</h2>
+            <p class="mt-4 mb-6" data-en="Favorite tracks from Farshad. Headphones recommended." data-fa="ترک‌های مورد علاقه از فرشاد. استفاده از هدفون توصیه می‌شود." data-ru="[RU: Favorite tracks from Farshad...]">[RU: Favorite tracks from Farshad...]</p> 
+            <div class="aspect-w-16 aspect-h-9" data-aos="fade-up">
+                <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" class="rounded-lg shadow-lg"
+                    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/26224698&color=00ffcc&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true">
+                </iframe>
+                <div style="font-size: 10px; line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;">
+                    <a href="https://soundcloud.com/farshadhiphop" title="FARSHAD" target="_blank" style="text-decoration: none;" class="text-primary hover:underline">FARSHAD</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fun & Personality Section -->
+        <section id="fun" class="py-16">
+            <h2 class="section-title glitch" data-text="Downtime" data-en="Downtime" data-fa="اوقات فراغت" data-ru="Свободное время">[RU: Downtime]</h2>
+            <div class="mt-8 space-y-6">
+                <div data-aos="fade-right">
+                    <h3 class="text-xl font-semibold text-primary mb-2" data-en="Favorite Games" data-fa="بازی‌های مورد علاقه" data-ru="Любимые игры">[RU: Favorite Games]</h3>
+                    <ul class="list-disc list-inside pl-4"> 
+                        <li data-en="Call of Duty Series" data-fa="سری بازی‌های Call of Duty" data-ru="[RU: Call of Duty Series]">[RU: Call of Duty Series]</li>
+                        <li data-en="DOOM (Classic & Modern)" data-fa="DOOM (کلاسیک و مدرن)" data-ru="[RU: DOOM (Classic & Modern)]">[RU: DOOM (Classic & Modern)]</li>
+                        <li data-en="Gunsmith" data-fa="Gunsmith" data-ru="[RU: Gunsmith]">[RU: Gunsmith]</li>
+                    </ul>
+                </div>
+                <div data-aos="fade-right" data-aos-delay="100">
+                    <h3 class="text-xl font-semibold text-primary mb-2" data-en="Personality Snapshot" data-fa="نگاهی به شخصیت" data-ru="Особенности характера">[RU: Personality Snapshot]</h3>
+                    <p data-en="Often found in deep thought, navigating the digital and real worlds with a quiet intensity. Values solitude for focused work and creative problem-solving. An observer, a thinker, an introvert." data-fa="اغلب در افکار عمیق یافت می‌شود، با شدتی آرام در دنیای دیجیتال و واقعی حرکت می‌کند. برای کار متمرکز و حل خلاقانه مشکلات به تنهایی ارزش قائل است. یک مشاهده‌گر، یک متفکر، یک درون‌گرا." data-ru="[RU: Often found in deep thought...]">[RU: Often found in deep thought...]</p> 
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 text-center">
+            <h2 class="section-title glitch" data-text="Get In Touch" data-en="Get In Touch" data-fa="ارتباط با من" data-ru="Связаться">[RU: Get In Touch]</h2>
+            <p class="mt-6 text-lg" data-en="Feel free to reach out. I'm always open to discussing new projects, creative ideas, or opportunities to be part of something visionary." data-fa="برای تماس راحت باشید. من همیشه برای بحث در مورد پروژه‌های جدید، ایده‌های خلاقانه یا فرصت‌هایی برای عضویت در چیزی رویایی آماده‌ام." data-ru="[RU: Feel free to reach out...]">[RU: Feel free to reach out...]</p>
+            <a href="mailto:omidkaramibio@gmail.com" class="inline-block mt-6 font-bold py-3 px-8 rounded hover:bg-opacity-80 transition-colors text-lg glitch" data-text="omidkaramibio@gmail.com"> 
+                omidkaramibio@gmail.com
+            </a>
+        </section>
+
+        <footer class="text-center py-8 border-t"> 
+            <p class="text-sm" data-en="&copy; <span id='currentYearEn'></span> Omid Karami. All rights reserved. Inspired by the digital shadows." data-fa="© <span id='currentYearFa'></span> امید کرمی. تمامی حقوق محفوظ است. با الهام از سایه‌های دیجیتال." data-ru="© <span id='currentYearRu'></span> Омид Карами. Все права защищены. Вдохновлено цифровыми тенями.">[RU: &copy; <span id='currentYearRu'></span> Omid Karami...]</p> 
+        </footer>
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({
+                once: true, 
+                mirror: false, 
+            });
+
+            const langEnButton = document.getElementById('lang-en');
+            const langFaButton = document.getElementById('lang-fa');
+            const langRuButton = document.getElementById('lang-ru'); // Added RU button
+            const translatableElements = document.querySelectorAll('[data-en]');
+            let currentLang = 'en'; 
+
+            function setLanguage(lang) {
+                currentLang = lang;
+                translatableElements.forEach(el => {
+                    const text = el.getAttribute(`data-${lang}`);
+                    if (text) {
+                        if (el.tagName === 'INPUT' && el.placeholder) {
+                            el.placeholder = text;
+                        } else {
+                            el.innerText = text;
+                        }
+                    }
+                    
+                    const sidebarEl = document.getElementById('sidebar');
+                    const mainContentEl = document.getElementById('main-content');
+                    const menuButtonEl = document.getElementById('menu-button');
+
+                    // Handle RTL for Persian, LTR for English and Russian
+                    if (lang === 'fa') {
+                        el.classList.add('persian-text');
+                        document.documentElement.lang = 'fa';
+                        document.documentElement.dir = 'rtl';
+                        if (sidebarEl) {
+                            sidebarEl.classList.remove('left-0', 'md:left-0', '-translate-x-full');
+                            sidebarEl.classList.add('right-0', 'md:right-0', 'translate-x-full'); 
+                            if(window.innerWidth >= 768) sidebarEl.classList.add('md:translate-x-0'); else sidebarEl.classList.remove('md:translate-x-0');
+                        }
+                        if (mainContentEl) {
+                            mainContentEl.classList.remove('md:ml-72');
+                            mainContentEl.classList.add('md:mr-72');
+                        }
+                        if (menuButtonEl) {
+                            menuButtonEl.classList.remove('left-4');
+                            menuButtonEl.classList.add('right-4');
+                        }
+                    } else { // English or Russian (LTR)
+                        el.classList.remove('persian-text');
+                        document.documentElement.lang = lang; // Set lang to 'en' or 'ru'
+                        document.documentElement.dir = 'ltr';
+                         if (sidebarEl) {
+                            sidebarEl.classList.remove('right-0', 'md:right-0', 'translate-x-full');
+                            sidebarEl.classList.add('left-0', 'md:left-0', '-translate-x-full');
+                            if(window.innerWidth >= 768) sidebarEl.classList.add('md:translate-x-0'); else sidebarEl.classList.remove('md:translate-x-0');
+                        }
+                        if (mainContentEl) {
+                            mainContentEl.classList.remove('md:mr-72');
+                            mainContentEl.classList.add('md:ml-72');
+                        }
+                        if (menuButtonEl) {
+                            menuButtonEl.classList.remove('right-4');
+                            menuButtonEl.classList.add('left-4');
+                        }
+                    }
+                });
+
+                if (langEnButton) langEnButton.classList.toggle('active-lang', lang === 'en');
+                if (langFaButton) langFaButton.classList.toggle('active-lang', lang === 'fa');
+                if (langRuButton) langRuButton.classList.toggle('active-lang', lang === 'ru'); // Toggle RU active state
+                
+                document.querySelectorAll('.glitch[data-text]').forEach(el => {
+                    const text = el.getAttribute(`data-${lang}`);
+                    if(text) el.setAttribute('data-text', text);
+                });
+
+                const sidebarEl = document.getElementById('sidebar');
+                if (sidebarEl && window.innerWidth >= 768) { 
+                     sidebarEl.classList.add('md:translate-x-0');
+                     if (currentLang === 'fa') {
+                        sidebarEl.classList.remove('-translate-x-full');
+                     } else { // EN or RU
+                        sidebarEl.classList.remove('translate-x-full');
+                     }
+                } else if (sidebarEl) { 
+                    if (currentLang === 'fa') {
+                        sidebarEl.classList.add('translate-x-full'); 
+                        sidebarEl.classList.remove('translate-x-0', '-translate-x-full');
+                    } else { // EN or RU
+                        sidebarEl.classList.add('-translate-x-full'); 
+                        sidebarEl.classList.remove('translate-x-0', 'translate-x-full');
+                    }
+                }
+                // Update year display for the current language
+                updateFooterYear(lang);
+            }
+            
+            function updateFooterYear(lang) {
+                const yearEnSpan = document.getElementById('currentYearEn');
+                const yearFaSpan = document.getElementById('currentYearFa');
+                const yearRuSpan = document.getElementById('currentYearRu');
+                const currentFullYear = new Date().getFullYear();
+
+                if(yearEnSpan) yearEnSpan.textContent = currentFullYear;
+                if(yearFaSpan) yearFaSpan.textContent = new Date().toLocaleDateString('fa-IR', { year: 'numeric' });
+                if(yearRuSpan) yearRuSpan.textContent = currentFullYear; // Russian uses standard numeric year
+            }
+
+
+            if (langEnButton) langEnButton.addEventListener('click', () => setLanguage('en'));
+            if (langFaButton) langFaButton.addEventListener('click', () => setLanguage('fa'));
+            if (langRuButton) langRuButton.addEventListener('click', () => setLanguage('ru')); // Add listener for RU
+            
+            setLanguage(currentLang); // Initialize with default language
+
+
+            const sidebar = document.getElementById('sidebar');
+            const menuButton = document.getElementById('menu-button');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            if (menuButton && sidebar) {
+                menuButton.addEventListener('click', () => {
+                    sidebar.classList.remove('md:translate-x-0'); 
+                    if (currentLang === 'fa') { 
+                        sidebar.classList.toggle('translate-x-full'); 
+                        sidebar.classList.toggle('translate-x-0');  
+                    } else { // EN or RU
+                        sidebar.classList.toggle('-translate-x-full'); 
+                        sidebar.classList.toggle('translate-x-0');   
+                    }
+                });
+            }
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth < 768 && sidebar && sidebar.classList.contains('translate-x-0')) { 
+                        if (currentLang === 'fa') {
+                            sidebar.classList.add('translate-x-full'); 
+                            sidebar.classList.remove('translate-x-0'); 
+                        } else { // EN or RU
+                            sidebar.classList.add('-translate-x-full'); 
+                            sidebar.classList.remove('translate-x-0');  
+                        }
+                    }
+                });
+            });
+
+            const terminalOutput = document.getElementById('terminal-output');
+            const terminalInput = document.getElementById('terminal-input-field');
+            
+            function setSimulatedIp() {
+                const dynamicUserIpElement = document.getElementById('user-ip-placeholder'); 
+                if (dynamicUserIpElement) {
+                     dynamicUserIpElement.textContent = `192.168.${Math.floor(Math.random() * 254) + 1}.${Math.floor(Math.random() * 254) + 1}`;
+                     dynamicUserIpElement.id = 'user-ip'; 
+                }
+            }
+            
+            const commands = {
+                help: () => {
+                    appendOutput("Available commands (case-sensitive):");
+                    appendOutput("  <span class='text-primary'>help</span>         - Show this help message");
+                    appendOutput("  <span class='text-primary'>whois</span>        - Simulate WHOIS lookup on your IP");
+                    appendOutput("  <span class='text-primary'>nmap</span>         - Simulate Nmap scan on your IP");
+                    appendOutput("  <span class='text-primary'>ping</span> [host]  - Simulate pinging a host (e.g., ping google.com)");
+                    appendOutput("  <span class='text-primary'>scan</span>         - Simulate a vulnerability scan");
+                    appendOutput("  <span class='text-primary'>ls</span>           - List 'files' (sections of the portfolio)");
+                    appendOutput("  <span class='text-primary'>cd</span> [section] - Navigate to a section (e.g., cd skills)");
+                    appendOutput("  <span class='text-primary'>clear</span>        - Clear the terminal screen");
+                    appendOutput("  <span class='text-primary'>date</span>         - Show current date and time");
+                    appendOutput("  <span class='text-primary'>msg</span> [message]- Send a 'secure' message (simulated)");
+                    appendOutput("  <span class='text-primary'>elliot</span>       - A word from our inspiration");
+                },
+                whois: async () => {
+                    const currentIp = document.getElementById('user-ip')?.textContent || "127.0.0.1";
+                    appendOutput(`Running WHOIS on ${currentIp}...`);
+                    await typeEffect(`Simulated WHOIS results for ${currentIp}:
+      NetRange:       192.168.0.0 - 192.168.255.255
+      CIDR:           192.168.0.0/16
+      NetName:        PRIVATE-ADDRESS-ABLK-RFC1918-IANA-RESERVED
+      NetHandle:      NET-192-168-0-0-1
+      Parent:         NET192 (NET-192-0-0-0-0)
+      NetType:        IANA Special Use
+      OriginAS:       
+      Organization:   Internet Assigned Numbers Authority (IANA)
+      RegDate:        1994-03
+      Updated:        2013-08-30
+      Comment:        Addresses starting with '192.168.' are considered private network addresses.
+      Comment:        They are not routable on the public Internet.
+      Ref:            https://rdap.arin.net/registry/ip/192.168.0.0`);
+                },
+                nmap: async () => {
+                    const currentIp = document.getElementById('user-ip')?.textContent || "127.0.0.1";
+                    appendOutput(`Starting Nmap 7.92 ( https://nmap.org ) at ${new Date().toLocaleString()}`);
+                    appendOutput(`Initiating SYN Stealth Scan on ${currentIp}`);
+                    await typeEffect("Scanning ...", 50, true);
+                    await delay(500);
+                    appendOutput(`Discovered open port 80/tcp on ${currentIp}`);
+                    await delay(300);
+                    appendOutput(`Discovered open port 443/tcp on ${currentIp}`);
+                    await delay(200);
+                    appendOutput(`Discovered open port 22/tcp on ${currentIp} (filtered)`);
+                    await delay(400);
+                    appendOutput("Nmap scan report for your_router.localdomain (simulated)");
+                    appendOutput("Host is up (0.0020s latency).");
+                    appendOutput("Not shown: 997 filtered tcp ports (no-response)");
+                    appendOutput("PORT    STATE  SERVICE");
+                    appendOutput("22/tcp  filtered ssh");
+                    appendOutput("80/tcp  open   http");
+                    appendOutput("443/tcp open   https");
+                    appendOutput("Nmap done: 1 IP address (1 host up) scanned in 3.50 seconds");
+                },
+                ping: async (args) => {
+                    const host = args[0] || "google.com";
+                    appendOutput(`Pinging ${host} with 32 bytes of data:`);
+                    for (let i = 0; i < 4; i++) {
+                        await delay(700);
+                        const time = (Math.random() * 50 + 10).toFixed(2);
+                        appendOutput(`Reply from ${host}: bytes=32 time=${time}ms TTL=58 (simulated)`);
+                    }
+                    appendOutput(`Ping statistics for ${host}: Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)`);
+                },
+                scan: async () => {
+                    appendOutput("Initiating deep vulnerability scan on local network node...");
+                    const vulnerabilities = [
+                        "CVE-2023-XXXX: Remote Code Execution (Medium)",
+                        "Outdated Apache Server Detected (High)",
+                        "Weak SSH Password Policy (Critical)",
+                        "Default Router Credentials Active (High)",
+                        "No WAF Detected (Informational)"
+                    ];
+                    for (let i = 0; i < vulnerabilities.length; i++) {
+                        await typeEffect(`Scanning module ${i+1}/${vulnerabilities.length}...`, 30, true);
+                        await delay(300 + Math.random() * 500);
+                        appendOutput(`[+] Potential finding: ${vulnerabilities[i]}`);
+                    }
+                    appendOutput("Scan complete. <span class='text-secondary'>5 potential issues found.</span> This is a simulation.");
+                },
+                ls: () => {
+                    appendOutput("drwxr-xr-x  Omid  staff   #home");
+                    appendOutput("drwxr-xr-x  Omid  staff   #skills");
+                    appendOutput("drwxr-xr-x  Omid  staff   #experience");
+                    appendOutput("drwxr-xr-x  Omid  staff   #articles");
+                    appendOutput("drwxr-xr-x  Omid  staff   #services");
+                    appendOutput("drwxr-xr-x  Omid  staff   #pgp-key");
+                    appendOutput("drwxr-xr-x  Omid  staff   #sound");
+                    appendOutput("drwxr-xr-x  Omid  staff   #fun");
+                    appendOutput("-rw-r--r--  Omid  staff   #contact_info.txt");
+                },
+                cd: (args) => {
+                    const section = args[0];
+                    if (section) {
+                        const targetElement = document.getElementById(section.replace('#',''));
+                        if (targetElement) {
+                            appendOutput(`Navigating to ${section}...`);
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                            appendOutput(`Error: Section '${section}' not found. Try 'ls' for options.`);
+                        }
+                    } else {
+                        appendOutput("Usage: cd [section_name]");
+                    }
+                },
+                clear: () => {
+                    if(terminalOutput) terminalOutput.innerHTML = '';
+                },
+                date: () => {
+                    appendOutput(new Date().toString());
+                },
+                msg: async (args) => {
+                    const message = args.join(" ");
+                    if (!message) {
+                        appendOutput("Usage: msg [your secret message]");
+                        return;
+                    }
+                    appendOutput("Attempting to send encrypted message...");
+                    await typeEffect("Encoding payload...", 50, true);
+                    await delay(500);
+                    appendOutput("Establishing secure tunnel (AES-256)...");
+                    await delay(800);
+                    appendOutput(`Message "<span style='color: var(--text-dark);'>${message}</span>" sent to /dev/null. (Simulated)`);
+                    appendOutput("Connection terminated.");
+                },
+                elliot: async () => {
+                    const quotes = [
+                        "Hello, friend.",
+                        "Control is an illusion.",
+                        "The world is a dangerous place, Elliot, not because of those who do evil, but because of those who look on and do nothing.",
+                        "What is it about society that disappoints you so much?",
+                        "I'm good at reading people. My secret? I look for the worst in them."
+                    ];
+                    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                    await typeEffect(`<span class='text-primary'>Elliot:</span> "${randomQuote}"`, 70);
+                },
+                unknown: (cmd) => {
+                    appendOutput(`<span class='text-secondary'>Error:</span> Command not found: ${cmd}. Type 'help'.`);
+                }
+            };
+
+            if (terminalInput && terminalOutput) {
+                terminalInput.addEventListener('keydown', async (e) => {
+                    if (e.key === 'Enter') {
+                        const fullCommand = terminalInput.value.trim();
+                        if (fullCommand) {
+                            appendOutput(`<span class="prompt">[OMID_KARAMI_PORTFOLIO_V2.1 ~]$</span> ${fullCommand}`);
+                            terminalInput.value = '';
+                            const [command, ...args] = fullCommand.split(/\s+/);
+                            
+                            terminalInput.disabled = true; 
+                            if (commands[command]) {
+                                await commands[command](args);
+                            } else {
+                                commands.unknown(command);
+                            }
+                            terminalInput.disabled = false; 
+                            terminalInput.focus(); 
+                        }
+                        terminalOutput.scrollTop = terminalOutput.scrollHeight; 
+                    }
+                });
+            }
+
+            function appendOutput(htmlContent) {
+                if (!terminalOutput) return;
+                const span = document.createElement('span');
+                span.innerHTML = htmlContent; 
+                terminalOutput.appendChild(span);
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+
+            async function typeEffect(text, speed = 50, singleLine = false) {
+                if (!terminalOutput) return;
+                const span = document.createElement('span');
+                if (singleLine) { 
+                    terminalOutput.appendChild(span);
+                }
+                
+                const lines = text.split('\n');
+                for (const line of lines) {
+                    let targetSpan = singleLine ? span : document.createElement('span');
+                    if (!singleLine) { 
+                        terminalOutput.appendChild(targetSpan);
+                    }
+                    for (let i = 0; i < line.length; i++) {
+                        targetSpan.innerHTML += line.charAt(i);
+                        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                        await delay(speed);
+                    }
+                }
+            }
+            
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            async function initialTerminalGreeting() {
+                if (!terminalOutput) return;
+                terminalOutput.innerHTML = ''; 
+                
+                const initialLines = [
+                    "[OMID_KARAMI_PORTFOLIO_V2.1 ~]$ Initializing Fsociety Shell...",
+                    "[OMID_KARAMI_PORTFOLIO_V2.1 ~]$ Connection established. Welcome, friend.",
+                    `[OMID_KARAMI_PORTFOLIO_V2.1 ~]$ Your IP (simulated): <span id="user-ip-placeholder" class="text-secondary">resolving...</span>`,
+                    "[OMID_KARAMI_PORTFOLIO_V2.1 ~]$ Type 'help' for a list of commands."
+                ];
+
+                for (const line of initialLines) {
+                    await typeEffect(line, 30);
+                }
+                setSimulatedIp(); 
+                if(terminalInput) terminalInput.focus();
+            }
+            
+            if (terminalOutput) { 
+                initialTerminalGreeting();
+            }
+
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.dataset.tab;
+
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === tabId) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    let targetElement;
+                    if (targetId === '#' || targetId === '#home') { 
+                        targetElement = document.getElementById('home');
+                    } else {
+                        targetElement = document.querySelector(targetId);
+                    }
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            // Update current year in footer - moved to setLanguage to update on lang change if needed
+            // updateFooterYear(currentLang); // Called initially by setLanguage
+
+            const logo = document.getElementById('elliot-logo');
+            if (logo) {
+                logo.addEventListener('mouseenter', () => {
+                    logo.classList.add('glitch');
+                });
+                logo.addEventListener('mouseleave', () => {
+                    logo.classList.remove('glitch');
+                });
+            }
+        }); 
+    </script>
+</body>
+</html>
