@@ -137,7 +137,7 @@
         #nickname {
             color: var(--text-dark);
             font-size: 0.9rem;
-            margin-top: -0.25rem; /* Adjust spacing if needed */
+            margin-top: -0.25rem; 
             margin-bottom: 0.5rem;
         }
         
@@ -192,17 +192,20 @@
         .timeline-item {
             position: relative;
             padding-left: 30px; 
-            margin-bottom: 30px;
+            margin-bottom: 15px; /* Reduced margin as content is less */
         }
         .timeline-item::before { 
             content: '';
             position: absolute;
             left: 9px; 
             top: 0;
-            bottom: 0;
+            bottom: 0; /* Adjusted if only title exists */
             width: 2px;
             background-color: var(--primary-color); 
             opacity: 0.3;
+        }
+         .timeline-item.only-title::before { /* If only title, shorten line */
+            height: 15px;
         }
         .timeline-item::after { 
             content: '';
@@ -222,12 +225,6 @@
         }
         .timeline-item h3 { 
              color: var(--primary-color); 
-        }
-        .timeline-item p.text-sm {
-            color: var(--text-dark); 
-        }
-        .timeline-item p.mt-1 { 
-            color: var(--text-light); 
         }
 
 
@@ -264,7 +261,7 @@
             color: var(--bg-dark); 
         }
         .persian-text { direction: rtl; text-align: right; font-family: 'Tahoma', 'Arial', sans-serif; }
-        /* Russian text will use default LTR and font */
+
 
         /* PGP Key Section Styling */
         #pgp-key-container {
@@ -354,14 +351,13 @@
 
         /* Telegram Link Animation */
         .telegram-link-animated {
-            display: inline-block; /* Ensure it behaves like a block for transforms */
+            display: inline-block; 
             transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
         }
         .telegram-link-animated:hover {
             transform: scale(1.05) translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 255, 204, 0.4);
         }
-
 
     </style>
 </head>
@@ -370,7 +366,11 @@
     <!-- Sidebar / Mobile Menu -->
     <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 md:w-72 transform -translate-x-full md:translate-x-0 p-6 space-y-6 overflow-y-auto">
         <div class="text-center">
-            <img src="https://placehold.co/150x150/0a0a0a/00ffcc?text=Elliot" alt="Elliot Alderson - Logo" id="elliot-logo" class="w-32 h-32 md:w-40 md:h-40 rounded-full mx-auto mb-4 border-2 border-primary shadow-lg">
+            <img src="eliot.jpg" 
+                 alt="Elliot Alderson - Logo" 
+                 id="elliot-logo" 
+                 class="w-32 h-32 md:w-40 md:h-40 rounded-full mx-auto mb-4 border-2 border-primary shadow-lg"
+                 onerror="this.onerror=null; this.src='https://placehold.co/150x150/0a0a0a/00ffcc?text=Elliot';">
             <h1 class="text-2xl font-bold text-primary glitch" data-text="Omid Karami">Omid Karami</h1>
             <p id="nickname" class="text-sm" data-en="aka wrongbyte" data-fa="مشهور به wrongbyte" data-ru="также известный как wrongbyte">[RU: aka wrongbyte]</p>
             <p class="text-sm" data-en="Cybersecurity Specialist" data-fa="متخصص امنیت سایبری" data-ru="Специалист по кибербезопасности">[RU: Cybersecurity Specialist]</p>
@@ -472,30 +472,20 @@
         <section id="experience" class="py-16">
             <h2 class="section-title glitch" data-text="Experience Timeline" data-en="Experience Timeline" data-fa="خط زمانی تجربه" data-ru="Хронология опыта">[RU: Experience Timeline]</h2>
             <div class="mt-8 space-y-8">
-                <div class="timeline-item" data-aos="fade-left">
+                <div class="timeline-item only-title" data-aos="fade-left">
                     <h3 class="text-xl font-semibold text-primary" data-en="Amn Gostaran Farzan" data-fa="امن گستران فرزان" data-ru="[RU: Amn Gostaran Farzan]">[RU: Amn Gostaran Farzan]</h3>
-                    <p class="text-sm" data-en="Role & Duration - [Details]" data-fa="نقش و مدت - [جزئیات]" data-ru="[RU: Role & Duration - [Details]]">[RU: Role & Duration - [Details]]</p> 
-                    <p class="mt-1" data-en="Key responsibilities and achievements..." data-fa="مسئولیت‌ها و دستاوردهای کلیدی..." data-ru="[RU: Key responsibilities...]">[RU: Key responsibilities...]</p>
                 </div>
-                <div class="timeline-item" data-aos="fade-left" data-aos-delay="100">
+                <div class="timeline-item only-title" data-aos="fade-left" data-aos-delay="100">
                     <h3 class="text-xl font-semibold text-primary" data-en="Daya Vira Fartak" data-fa="دایا ویرا فرتاک" data-ru="[RU: Daya Vira Fartak]">[RU: Daya Vira Fartak]</h3>
-                    <p class="text-sm" data-en="Role & Duration - [Details]" data-fa="نقش و مدت - [جزئیات]" data-ru="[RU: Role & Duration - [Details]]">[RU: Role & Duration - [Details]]</p> 
-                     <p class="mt-1" data-en="Key responsibilities and achievements..." data-fa="مسئولیت‌ها و دستاوردهای کلیدی..." data-ru="[RU: Key responsibilities...]">[RU: Key responsibilities...]</p>
                 </div>
-                <div class="timeline-item" data-aos="fade-left" data-aos-delay="200">
+                <div class="timeline-item only-title" data-aos="fade-left" data-aos-delay="200">
                     <h3 class="text-xl font-semibold text-primary" data-en="Robotics Association, Islamic Azad University of Yazd" data-fa="انجمن رباتیک، دانشگاه آزاد اسلامی یزد" data-ru="[RU: Robotics Association, IAU Yazd]">[RU: Robotics Association, IAU Yazd]</h3>
-                    <p class="text-sm" data-en="Role & Duration - [Details]" data-fa="نقش و مدت - [جزئیات]" data-ru="[RU: Role & Duration - [Details]]">[RU: Role & Duration - [Details]]</p> 
-                     <p class="mt-1" data-en="Key responsibilities and achievements..." data-fa="مسئولیت‌ها و دستاوردهای کلیدی..." data-ru="[RU: Key responsibilities...]">[RU: Key responsibilities...]</p>
                 </div>
-                 <div class="timeline-item" data-aos="fade-left" data-aos-delay="300">
+                 <div class="timeline-item only-title" data-aos="fade-left" data-aos-delay="300">
                     <h3 class="text-xl font-semibold text-primary" data-en="Computer Association, Islamic Azad University of Yazd" data-fa="انجمن کامپیوتر، دانشگاه آزاد اسلامی یزد" data-ru="[RU: Computer Association, IAU Yazd]">[RU: Computer Association, IAU Yazd]</h3>
-                    <p class="text-sm" data-en="Role & Duration - [Details]" data-fa="نقش و مدت - [جزئیات]" data-ru="[RU: Role & Duration - [Details]]">[RU: Role & Duration - [Details]]</p> 
-                     <p class="mt-1" data-en="Key responsibilities and achievements..." data-fa="مسئولیت‌ها و دستاوردهای کلیدی..." data-ru="[RU: Key responsibilities...]">[RU: Key responsibilities...]</p>
                 </div>
-                 <div class="timeline-item" data-aos="fade-left" data-aos-delay="400">
+                 <div class="timeline-item only-title" data-aos="fade-left" data-aos-delay="400">
                     <h3 class="text-xl font-semibold text-primary" data-en="Siam Gostar Mandegar Yazd" data-fa="صیام گستر ماندگار یزد" data-ru="[RU: Siam Gostar Mandegar Yazd]">[RU: Siam Gostar Mandegar Yazd]</h3>
-                    <p class="text-sm" data-en="Role & Duration - [Details]" data-fa="نقش و مدت - [جزئیات]" data-ru="[RU: Role & Duration - [Details]]">[RU: Role & Duration - [Details]]</p> 
-                     <p class="mt-1" data-en="Key responsibilities and achievements..." data-fa="مسئولیت‌ها و دستاوردهای کلیدی..." data-ru="[RU: Key responsibilities...]">[RU: Key responsibilities...]</p>
                 </div>
             </div>
         </section>
@@ -590,7 +580,7 @@ PXcLPpSqwPG++6gLbYHGrc8Z3xCW
             <p class="mt-4 mb-6" data-en="Favorite tracks from Farshad. Headphones recommended." data-fa="ترک‌های مورد علاقه از فرشاد. استفاده از هدفون توصیه می‌شود." data-ru="[RU: Favorite tracks from Farshad...]">[RU: Favorite tracks from Farshad...]</p> 
             <div class="aspect-w-16 aspect-h-9" data-aos="fade-up">
                 <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" class="rounded-lg shadow-lg"
-                    src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/26224698&color=00ffcc&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true">
+                    src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/farshadhiphop/romane-moztareb&color=%2300ffcc&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true">
                 </iframe>
                 <div style="font-size: 10px; line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;">
                     <a href="https://soundcloud.com/farshadhiphop" title="FARSHAD" target="_blank" style="text-decoration: none;" class="text-primary hover:underline">FARSHAD</a>
@@ -642,14 +632,14 @@ PXcLPpSqwPG++6gLbYHGrc8Z3xCW
 
             const langEnButton = document.getElementById('lang-en');
             const langFaButton = document.getElementById('lang-fa');
-            const langRuButton = document.getElementById('lang-ru'); // Added RU button
-            const translatableElements = document.querySelectorAll('[data-en]');
+            const langRuButton = document.getElementById('lang-ru'); 
+            const translatableElements = document.querySelectorAll('[data-en]'); 
             let currentLang = 'en'; 
 
             function setLanguage(lang) {
                 currentLang = lang;
                 translatableElements.forEach(el => {
-                    const text = el.getAttribute(`data-${lang}`);
+                    const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en'); 
                     if (text) {
                         if (el.tagName === 'INPUT' && el.placeholder) {
                             el.placeholder = text;
@@ -662,7 +652,6 @@ PXcLPpSqwPG++6gLbYHGrc8Z3xCW
                     const mainContentEl = document.getElementById('main-content');
                     const menuButtonEl = document.getElementById('menu-button');
 
-                    // Handle RTL for Persian, LTR for English and Russian
                     if (lang === 'fa') {
                         el.classList.add('persian-text');
                         document.documentElement.lang = 'fa';
@@ -670,7 +659,14 @@ PXcLPpSqwPG++6gLbYHGrc8Z3xCW
                         if (sidebarEl) {
                             sidebarEl.classList.remove('left-0', 'md:left-0', '-translate-x-full');
                             sidebarEl.classList.add('right-0', 'md:right-0', 'translate-x-full'); 
-                            if(window.innerWidth >= 768) sidebarEl.classList.add('md:translate-x-0'); else sidebarEl.classList.remove('md:translate-x-0');
+                            if(window.innerWidth >= 768) {
+                                sidebarEl.classList.add('md:translate-x-0');
+                            } else {
+                                sidebarEl.classList.remove('md:translate-x-0');
+                                if (!sidebarEl.classList.contains('translate-x-0')) {
+                                     sidebarEl.classList.add('translate-x-full'); 
+                                }
+                            }
                         }
                         if (mainContentEl) {
                             mainContentEl.classList.remove('md:ml-72');
@@ -680,14 +676,21 @@ PXcLPpSqwPG++6gLbYHGrc8Z3xCW
                             menuButtonEl.classList.remove('left-4');
                             menuButtonEl.classList.add('right-4');
                         }
-                    } else { // English or Russian (LTR)
+                    } else { 
                         el.classList.remove('persian-text');
-                        document.documentElement.lang = lang; // Set lang to 'en' or 'ru'
+                        document.documentElement.lang = lang; 
                         document.documentElement.dir = 'ltr';
                          if (sidebarEl) {
                             sidebarEl.classList.remove('right-0', 'md:right-0', 'translate-x-full');
                             sidebarEl.classList.add('left-0', 'md:left-0', '-translate-x-full');
-                            if(window.innerWidth >= 768) sidebarEl.classList.add('md:translate-x-0'); else sidebarEl.classList.remove('md:translate-x-0');
+                            if(window.innerWidth >= 768) {
+                                sidebarEl.classList.add('md:translate-x-0');
+                            } else {
+                                sidebarEl.classList.remove('md:translate-x-0');
+                                if (!sidebarEl.classList.contains('translate-x-0')) {
+                                     sidebarEl.classList.add('-translate-x-full'); 
+                                }
+                            }
                         }
                         if (mainContentEl) {
                             mainContentEl.classList.remove('md:mr-72');
@@ -702,31 +705,13 @@ PXcLPpSqwPG++6gLbYHGrc8Z3xCW
 
                 if (langEnButton) langEnButton.classList.toggle('active-lang', lang === 'en');
                 if (langFaButton) langFaButton.classList.toggle('active-lang', lang === 'fa');
-                if (langRuButton) langRuButton.classList.toggle('active-lang', lang === 'ru'); // Toggle RU active state
+                if (langRuButton) langRuButton.classList.toggle('active-lang', lang === 'ru'); 
                 
                 document.querySelectorAll('.glitch[data-text]').forEach(el => {
-                    const text = el.getAttribute(`data-${lang}`);
+                    const text = el.getAttribute(`data-${lang}`) || el.getAttribute('data-en'); 
                     if(text) el.setAttribute('data-text', text);
                 });
-
-                const sidebarEl = document.getElementById('sidebar');
-                if (sidebarEl && window.innerWidth >= 768) { 
-                     sidebarEl.classList.add('md:translate-x-0');
-                     if (currentLang === 'fa') {
-                        sidebarEl.classList.remove('-translate-x-full');
-                     } else { // EN or RU
-                        sidebarEl.classList.remove('translate-x-full');
-                     }
-                } else if (sidebarEl) { 
-                    if (currentLang === 'fa') {
-                        sidebarEl.classList.add('translate-x-full'); 
-                        sidebarEl.classList.remove('translate-x-0', '-translate-x-full');
-                    } else { // EN or RU
-                        sidebarEl.classList.add('-translate-x-full'); 
-                        sidebarEl.classList.remove('translate-x-0', 'translate-x-full');
-                    }
-                }
-                // Update year display for the current language
+                
                 updateFooterYear(lang);
             }
             
@@ -738,15 +723,15 @@ PXcLPpSqwPG++6gLbYHGrc8Z3xCW
 
                 if(yearEnSpan) yearEnSpan.textContent = currentFullYear;
                 if(yearFaSpan) yearFaSpan.textContent = new Date().toLocaleDateString('fa-IR', { year: 'numeric' });
-                if(yearRuSpan) yearRuSpan.textContent = currentFullYear; // Russian uses standard numeric year
+                if(yearRuSpan) yearRuSpan.textContent = currentFullYear; 
             }
 
 
             if (langEnButton) langEnButton.addEventListener('click', () => setLanguage('en'));
             if (langFaButton) langFaButton.addEventListener('click', () => setLanguage('fa'));
-            if (langRuButton) langRuButton.addEventListener('click', () => setLanguage('ru')); // Add listener for RU
+            if (langRuButton) langRuButton.addEventListener('click', () => setLanguage('ru')); 
             
-            setLanguage(currentLang); // Initialize with default language
+            setLanguage(currentLang); 
 
 
             const sidebar = document.getElementById('sidebar');
@@ -755,11 +740,10 @@ PXcLPpSqwPG++6gLbYHGrc8Z3xCW
 
             if (menuButton && sidebar) {
                 menuButton.addEventListener('click', () => {
-                    sidebar.classList.remove('md:translate-x-0'); 
                     if (currentLang === 'fa') { 
                         sidebar.classList.toggle('translate-x-full'); 
                         sidebar.classList.toggle('translate-x-0');  
-                    } else { // EN or RU
+                    } else { 
                         sidebar.classList.toggle('-translate-x-full'); 
                         sidebar.classList.toggle('translate-x-0');   
                     }
@@ -772,7 +756,7 @@ PXcLPpSqwPG++6gLbYHGrc8Z3xCW
                         if (currentLang === 'fa') {
                             sidebar.classList.add('translate-x-full'); 
                             sidebar.classList.remove('translate-x-0'); 
-                        } else { // EN or RU
+                        } else { 
                             sidebar.classList.add('-translate-x-full'); 
                             sidebar.classList.remove('translate-x-0');  
                         }
@@ -1046,9 +1030,6 @@ PXcLPpSqwPG++6gLbYHGrc8Z3xCW
                 });
             });
             
-            // Update current year in footer - moved to setLanguage to update on lang change if needed
-            // updateFooterYear(currentLang); // Called initially by setLanguage
-
             const logo = document.getElementById('elliot-logo');
             if (logo) {
                 logo.addEventListener('mouseenter', () => {
